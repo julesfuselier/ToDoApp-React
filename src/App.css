@@ -36,3 +36,57 @@
     transform: rotate(360deg);
   }
 }
+
+.avatar {
+  border-radius: 50%;
+}
+
+.TodoList li {
+  background: #ffffff;
+  margin: 12px 0;
+  padding: 16px 20px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+  font-size: 15px;
+  color: #374151;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.TodoList li:hover {
+  border-color: #d1d5db;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Style du texte du TODO */
+.TodoList li span {
+  flex: 1;
+  text-align: left;
+}
+
+/* Style du bouton Finish */
+.TodoList li button {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  margin-left: 12px;
+}
+
+.TodoList li button:hover {
+  background: #dc2626;
+  transform: scale(1.05);
+}
+
+.TodoList li button:active {
+  transform: scale(0.95);
+}
