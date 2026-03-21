@@ -2,7 +2,7 @@
   "tasks": [
     {
       "id": 101,
-      "title": "1. Fonctionnalités",
+      "title": "Fonctionnalités",
       "description": "",
       "date_creation": "2026-01-01",
       "date_echeance": "2026-03-01",
@@ -15,7 +15,7 @@
     },
     {
       "id": 102,
-      "title": "2. Etude de marché",
+      "title": "Etude de marché",
       "description": "",
       "date_creation": "2026-01-02",
       "date_echeance": "2026-04-01",
@@ -24,7 +24,7 @@
     },
     {
       "id": 103,
-      "title": "3. Wireframes",
+      "title": "Wireframes",
       "description": "",
       "date_creation": "2026-01-01",
       "date_echeance": "2026-03-17",
@@ -33,7 +33,7 @@
     },
     {
       "id": 104,
-      "title": "4. Design",
+      "title": "Design",
       "description": "",
       "date_creation": "2026-01-01",
       "date_echeance": "2026-03-18",
@@ -42,7 +42,7 @@
     },
     {
       "id": 105,
-      "title": "5. Landing Page",
+      "title": "Landing Page",
       "description": "",
       "date_creation": "2026-01-05",
       "date_echeance": "2026-03-13",
@@ -50,7 +50,7 @@
     },
     {
       "id": 106,
-      "title": "6. Développement",
+      "title": "Développement",
       "description": "",
       "date_creation": "2026-01-05",
       "date_echeance": "2026-03-28",
@@ -58,7 +58,7 @@
     },
     {
       "id": 107,
-      "title": "7. Publication / Déploiement",
+      "title": "Publication / Déploiement",
       "description": "",
       "date_creation": "2026-01-06",
       "date_echeance": "2026-03-27",
@@ -74,7 +74,7 @@
     },
     {
       "id": 108,
-      "title": "8. Marketing",
+      "title": "Marketing",
       "description": "",
       "date_creation": "2026-03-10",
       "date_echeance": "2026-05-01",
@@ -83,7 +83,7 @@
     },
     {
       "id": 109,
-      "title": "9. Feedbacks",
+      "title": "Feedbacks",
       "description": "",
       "date_creation": "2026-03-01",
       "date_echeance": "2026-05-01",
@@ -111,7 +111,7 @@
       "id": 203,
       "title": "Autre",
       "description": "",
-      "color": "bluesky",
+      "color": "burlywood",
       "icon": ""
     },
     {

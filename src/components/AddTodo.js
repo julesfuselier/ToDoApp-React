@@ -1,24 +1,50 @@
-import { useState } from 'react';
+function AddTodo({ onAdd, listCat }) {
 
-function AddTodo({ onAdd }) {
-    const [text, setText] = useState("");
 
-    const handleAdd = () => {
-        onAdd(text);
-        setText("");
-    };
+    function handleAdd(e) {
+        e.preventDefault();
+
+        const formData = new FormData(e.target);
+
+        onAdd(
+            formData.get("title"),
+            formData.get("description"),
+            formData.get("date_creation"),
+            formData.get("category")
+        );
+
+        e.target.reset();
+    }
 
     return (
         <div className="AddTodo">
             <h2>Add a new TODO</h2>
-            <input
-                type="text"
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleAdd()}
-                placeholder="Enter new TODO"
-            />
-            <button onClick={handleAdd}>Add</button>
+            <form onSubmit={handleAdd}>
+                <input
+                    name="title"
+                    type="text"
+                    onKeyPress={(e) => e.key === 'Enter' && handleAdd()}
+                    placeholder="Enter new TODO"
+                />
+                <input
+                    name="description"
+                    type="text"
+                    placeholder="Enter description"
+                />
+                <input
+                    name="date_creation"
+                    type="date"
+                />
+                <select name="category">
+                    <option value="">Select category</option>
+                    {listCat.map((cat) => (
+                        <option key={cat.id} value={cat.id}>
+                            {cat.title}
+                        </option>
+                    ))}
+                </select>
+                <button type="submit">Submit</button>
+            </form>
         </div>
     );
 }
