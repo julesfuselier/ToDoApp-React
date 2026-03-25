@@ -48,11 +48,21 @@ function App() {
         setList([]);
     }
 
+    const updateItemStatus = (id, newStatus) => {
+        const updatedList = list.map(item => {
+            if (item.id === id) {
+                return { ...item, etat: newStatus };
+            }
+            return item;
+        });
+        setList(updatedList);
+    };
+
     return (
         <div className="App">
             <TitleComponent />
 
-            <TodoList list={list} listCat={listCategories} listLink={listRelations} onDelete={deleteItem} onReset={resetList} />
+            <TodoList list={list} listCat={listCategories} listLink={listRelations} onDelete={deleteItem} onReset={resetList} onUpdateStatus={updateItemStatus} />
 
             <AddTodo onAdd={addItem} listCat={listCategories} />
         </div>

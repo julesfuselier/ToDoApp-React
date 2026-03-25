@@ -1,4 +1,4 @@
-function TodoList({ list, listCat, listLink, onDelete, onReset  }) {
+function TodoList({ list, listCat, listLink, onDelete, onReset, onUpdateStatus  }) {
 
     const getCategoriesForTask = (taskId) => {
         const categoryIds = listLink
@@ -29,7 +29,15 @@ function TodoList({ list, listCat, listLink, onDelete, onReset  }) {
                         return (
                             <li key={item.id}>
                                 <span>{item.title}</span>
-                                <span>{item.etat}</span>
+                                <select
+                                    value={item.etat}
+                                    onChange={(e) => onUpdateStatus(item.id, e.target.value)}
+                                >
+                                    <option value="Nouveau">Nouveau</option>
+                                    <option value="En attente">En attente</option>
+                                    <option value="Reussi">Reussi</option>
+                                    <option value="Abandoné">Abandoné</option>
+                                </select>
 
                                 <span>{item.date_creation} - {item.date_echeance}</span>
 
