@@ -1,4 +1,8 @@
+import {useState} from "react";
+
 function TodoList({ list, listCat, listLink, onDelete, onReset, onUpdateStatus  }) {
+
+    const [filterStatus, setFilterStatus] = useState("Tous");
 
     const getCategoriesForTask = (taskId) => {
         const categoryIds = listLink
@@ -9,16 +13,36 @@ function TodoList({ list, listCat, listLink, onDelete, onReset, onUpdateStatus  
     };
 
     const sortedList = [...list]
-        .filter(item => !["Reussi", "Abandoné"].includes(item.etat))
+        .filter((item) => {
+            if (filterStatus === "Tous") {
+                return true;
+            }
+            else if (filterStatus === "Actifs") {
+                return item.etat !== "Reussi" && item.etat !== "Abandoné";
+            }
+            else {
+                return item.etat === filterStatus;
+            }
+        })
         .sort((a, b) => {
             if (!a.date_echeance) return 1;
             if (!b.date_echeance) return -1;
-
             return new Date(a.date_echeance) - new Date(b.date_echeance);
         });
 
     return (
         <div className="TodoList">
+            <select
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+            >
+                <option value="Tous">Tous</option>
+                <option value="Actifs">Actif</option>
+                <option value="Nouveau">Nouveau</option>
+                <option value="En attente">En attente</option>
+                <option value="Reussi">Reussi</option>
+                <option value="Abandoné">Abandoné</option>
+            </select>
             <h2>Your TODO List</h2>
             <button onClick={onReset}>Reset</button>
             <ul>

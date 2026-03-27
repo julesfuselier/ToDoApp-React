@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import {TitleComponent} from './components/TitleComponent';
-import TodoList from './components/TodoList';
-import AddTodo from './components/AddTodo';
+import {TitleComponent} from './components/titleComponent/TitleComponent';
+import TodoList from './components/todoList/TodoList';
+import AddTodo from './components/addTodo/AddTodo';
 
 import data from './data.json';
 
