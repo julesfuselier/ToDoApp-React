@@ -4,15 +4,18 @@ import TodoList from './components/todoList/TodoList';
 import AddTodo from './components/addTodo/AddTodo';
 import CategoryList from './components/categoryList/CategoryList';
 import AddCategory from './components/addCategory/AddCategory';
+import Header from './components/header/Header';
 
 import data from './data.json';
 
 import './App.css';
+import Footer from "./components/footer/Footer";
 
 function App() {
     const [list, setList] = useState(data.tasks);
     const [listCategories, setListCategories] = useState(data.categories);
     const [listRelations, setListRelations] = useState(data.relations);
+    const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
 
     const addItem = (text, description, date, categoryId) => {
         if (text.trim() !== "") {
@@ -39,6 +42,7 @@ function App() {
                 setListRelations([...listRelations, newRelation]);
             }
         }
+        setIsTaskModalOpen(false);
     };
 
     const deleteItem = (id) => {
@@ -85,6 +89,8 @@ function App() {
 
     return (
         <div className="App">
+            <Header list={list} />
+
             <TitleComponent />
 
             <TodoList list={list} listCat={listCategories} listLink={listRelations} onDelete={deleteItem} onReset={resetList} onUpdateStatus={updateItemStatus} />
@@ -93,6 +99,28 @@ function App() {
 
             <CategoryList listCat={listCategories} onDeleteCategory={deleteCategory} />
             <AddCategory onAdd={addCategory} />
+
+            <Footer onOpenModal={() => setIsTaskModalOpen(true)} />
+
+            {isTaskModalOpen && (
+                <div style={{
+                    position: "fixed", top: 0, left: 0, width: "100%", height: "100%",
+                    backgroundColor: "rgba(0,0,0,0.5)",
+                    display: "flex", justifyContent: "center", alignItems: "center"
+                }}>
+                    <div style={{ backgroundColor: "white", padding: "20px", borderRadius: "10px", position: "relative" }}>
+
+                        <button
+                            onClick={() => setIsTaskModalOpen(false)}
+                            style={{ position: "absolute", top: "10px", right: "10px", background: "red", color: "white" }}
+                        >
+                            X
+                        </button>
+
+                        <AddTodo onAdd={addItem} listCat={listCategories} />
+
+                    </div>
+                </div>)}
 
         </div>
     );

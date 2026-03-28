@@ -9,7 +9,7 @@ function AddTodo({ onAdd, listCat }) {
         onAdd(
             formData.get("title"),
             formData.get("description"),
-            formData.get("date_creation"),
+            formData.get("date_echeance"),
             formData.get("category")
         );
 
@@ -25,6 +25,7 @@ function AddTodo({ onAdd, listCat }) {
                     type="text"
                     onKeyPress={(e) => e.key === 'Enter' && handleAdd()}
                     placeholder="Enter new TODO"
+                    required minLength={5}
                 />
                 <input
                     name="description"
@@ -32,7 +33,7 @@ function AddTodo({ onAdd, listCat }) {
                     placeholder="Enter description"
                 />
                 <input
-                    name="date_creation"
+                    name="date_echeance"
                     type="date"
                 />
                 <select name="category">

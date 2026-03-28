@@ -1,8 +1,12 @@
 import {useState} from "react";
+import Task from "../task/Task";
+import Filter from "../filter/Filter";
 
 function TodoList({ list, listCat, listLink, onDelete, onReset, onUpdateStatus  }) {
 
     const [filterStatus, setFilterStatus] = useState("Tous");
+
+    const [sortCriteria, setSortCriteria] = useState("date_echeance");
 
     const getCategoriesForTask = (taskId) => {
         const categoryIds = listLink
@@ -25,9 +29,17 @@ function TodoList({ list, listCat, listLink, onDelete, onReset, onUpdateStatus  
             }
         })
         .sort((a, b) => {
-            if (!a.date_echeance) return 1;
-            if (!b.date_echeance) return -1;
-            return new Date(a.date_echeance) - new Date(b.date_echeance);
+            if (sortCriteria === "nom") {
+                return a.title.localeCompare(b.title);
+            }
+            else if (sortCriteria === "date_creation") {
+                return new Date(a.date_creation) - new Date(b.date_creation);
+            }
+            else {
+                if (!a.date_echeance) return 1;
+                if (!b.date_echeance) return -1;
+                return new Date(a.date_echeance) - new Date(b.date_echeance);
+            }
         });
 
     return (
@@ -37,57 +49,33 @@ function TodoList({ list, listCat, listLink, onDelete, onReset, onUpdateStatus  
                 onChange={(e) => setFilterStatus(e.target.value)}
             >
                 <option value="Tous">Tous</option>
-                <option value="Actifs">Actif</option>
+                <option value="Actifs">Actifs (En cours)</option>
                 <option value="Nouveau">Nouveau</option>
                 <option value="En attente">En attente</option>
                 <option value="Reussi">Reussi</option>
                 <option value="Abandoné">Abandoné</option>
             </select>
+
             <h2>Your TODO List</h2>
             <button onClick={onReset}>Reset</button>
-            <ul>
-                {sortedList
-                    .map((item) => {
-                        const categories = getCategoriesForTask(item.id);
 
-                        return (
-                            <li key={item.id}>
-                                <span>{item.title}</span>
-                                <select
-                                    value={item.etat}
-                                    onChange={(e) => onUpdateStatus(item.id, e.target.value)}
-                                >
-                                    <option value="Nouveau">Nouveau</option>
-                                    <option value="En attente">En attente</option>
-                                    <option value="Reussi">Reussi</option>
-                                    <option value="Abandoné">Abandoné</option>
-                                </select>
+            <Filter sortCriteria={sortCriteria} setSortCriteria={setSortCriteria} />
 
-                                <span>{item.date_creation} - {item.date_echeance}</span>
+            <div>
+                {sortedList.map((item) => {
+                    const categories = getCategoriesForTask(item.id);
 
-                                <div>
-                                    {categories.map(cat => (
-                                        <span
-                                            key={cat.id}
-                                            style={{
-                                                backgroundColor: cat.color,
-                                                padding: "2px 6px",
-                                                margin: "2px",
-                                                borderRadius: "5px"
-                                            }}
-                                        >
-                                            {cat.title}
-                                        </span>
-                                    ))}
-                                </div>
-
-                                <button onClick={() => onDelete(item.id)}>
-                                    Remove
-                                </button>
-                            </li>
-                        );
-                    })}
-            </ul>
+                    return (
+                        <Task
+                            key={item.id}
+                            item={item}
+                            categories={categories}
+                            onUpdateStatus={onUpdateStatus}
+                            onDelete={onDelete}
+                        />
+                    );
+                })}
+            </div>
         </div>
     );
 }
