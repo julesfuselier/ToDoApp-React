@@ -4,7 +4,8 @@ import Filter from "../filter/Filter";
 
 function TodoList({ list, listCat, listLink, onDelete, onReset, onUpdateStatus, onEdit  }) {
 
-    const [filterStatus, setFilterStatus] = useState("Tous");
+    const [selectedEtats, setSelectedEtats] = useState(["Nouveau", "En attente"]);
+    const [selectedCategories, setSelectedCategories] = useState([]);
 
     const [sortCriteria, setSortCriteria] = useState("date_echeance");
 
@@ -18,16 +19,20 @@ function TodoList({ list, listCat, listLink, onDelete, onReset, onUpdateStatus, 
 
     const sortedList = [...list]
         .filter((item) => {
-            if (filterStatus === "Tous") {
-                return true;
+            let matchEtat = true;
+            if (selectedEtats.length > 0) {
+                matchEtat = selectedEtats.includes(item.etat);
             }
-            else if (filterStatus === "Actifs") {
-                return item.etat !== "Reussi" && item.etat !== "Abandoné";
+
+            let matchCat = true;
+            if (selectedCategories.length > 0) {
+                const itemCatIds = getCategoriesForTask(item.id).map(c => c.id);
+                matchCat = selectedCategories.some(catId => itemCatIds.includes(catId));
             }
-            else {
-                return item.etat === filterStatus;
-            }
+
+            return matchEtat && matchCat;
         })
+
         .sort((a, b) => {
             if (sortCriteria === "nom") {
                 return a.title.localeCompare(b.title);
@@ -44,22 +49,19 @@ function TodoList({ list, listCat, listLink, onDelete, onReset, onUpdateStatus, 
 
     return (
         <div className="TodoList">
-            <select
-                value={filterStatus}
-                onChange={(e) => setFilterStatus(e.target.value)}
-            >
-                <option value="Tous">Tous</option>
-                <option value="Actifs">Actifs (En cours)</option>
-                <option value="Nouveau">Nouveau</option>
-                <option value="En attente">En attente</option>
-                <option value="Reussi">Reussi</option>
-                <option value="Abandoné">Abandoné</option>
-            </select>
 
             <h2>Your TODO List</h2>
             <button onClick={onReset}>Reset</button>
 
-            <Filter sortCriteria={sortCriteria} setSortCriteria={setSortCriteria} />
+            <Filter
+                sortCriteria={sortCriteria}
+                setSortCriteria={setSortCriteria}
+                selectedEtats={selectedEtats}
+                setSelectedEtats={setSelectedEtats}
+                listCat={listCat}
+                selectedCategories={selectedCategories}
+                setSelectedCategories={setSelectedCategories}
+            />
 
             <div>
                 {sortedList.map((item) => {
