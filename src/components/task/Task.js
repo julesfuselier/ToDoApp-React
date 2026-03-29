@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { isOverdue, formatDate } from "../../utils";
+import { useApp } from "../../contexts/AppContext";
 
-function Task({ item, categories, onUpdateStatus, onDelete, onEdit }) {
+function Task({ item, categories }) {
+    const { updateItemStatus, deleteItem, setEditingTask } = useApp();
 
     const [isFull, setIsFull] = useState(false);
     const isTaskOverdue = isOverdue(item.date_echeance, item.etat);
@@ -39,7 +41,7 @@ function Task({ item, categories, onUpdateStatus, onDelete, onEdit }) {
                 <h3 style={{ flex: 1, margin: 0 }}>{item.title}</h3>
 
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                    {isTaskOverdue && <span title="Tâche en retard !">Attention</span>}
+                    {isTaskOverdue && <span title="Tâche en retard !">⚠</span>}
                     <span style={{ fontSize: "14px", color: "#6b7280" }}>
                          {formatDate(item.date_echeance)}
                     </span>
@@ -110,9 +112,9 @@ function Task({ item, categories, onUpdateStatus, onDelete, onEdit }) {
                     {item.equipiers && item.equipiers.length > 0 && (
                         <div style={{ marginTop: "10px" }}>
                             <strong>Équipiers : </strong>
-                            {item.equipiers.map((teammate, index) => (
+                            {item.equipiers.map((teammate) => (
                                 <span
-                                    key={index}
+                                    key={teammate}
                                     style={{
                                         backgroundColor: "#e0e0e0",
                                         padding: "4px 10px",
@@ -131,7 +133,7 @@ function Task({ item, categories, onUpdateStatus, onDelete, onEdit }) {
                         <strong>Statut :</strong>
                         <select
                             value={item.etat}
-                            onChange={(e) => onUpdateStatus(item.id, e.target.value)}
+                            onChange={(e) => updateItemStatus(item.id, e.target.value)}
                             onClick={(e) => e.stopPropagation()}
                             style={{
                                 padding: "6px 12px",
@@ -150,7 +152,7 @@ function Task({ item, categories, onUpdateStatus, onDelete, onEdit }) {
                         </select>
 
                         <button
-                            onClick={(e) => { e.stopPropagation(); onEdit(item); }}
+                            onClick={(e) => { e.stopPropagation(); setEditingTask(item); }}
                             style={{
                                 padding: "8px 16px",
                                 backgroundColor: "#3B82F6",
@@ -168,7 +170,7 @@ function Task({ item, categories, onUpdateStatus, onDelete, onEdit }) {
                             onClick={(e) => {
                                 e.stopPropagation();
                                 if(window.confirm("Supprimer cette tâche ?")) {
-                                    onDelete(item.id);
+                                    deleteItem(item.id);
                                 }
                             }}
                             style={{

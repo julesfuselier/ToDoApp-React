@@ -1,12 +1,15 @@
 import "./Footer.css";
+import { useApp } from '../../contexts/AppContext';
 
-function Footer({ onOpenTaskModal, onOpenCategoryModal, currentView }) {
+function Footer() {
+    const { currentView, setIsTaskModalOpen, setIsCategoryModalOpen } = useApp();
+
     return (
         <footer className="footer">
             <div className="footer-buttons">
                 {currentView === "tasks" && (
                     <button
-                        onClick={onOpenTaskModal}
+                        onClick={() => setIsTaskModalOpen(true)}
                         className="footer-button task"
                     >
                         + Nouvelle Tâche
@@ -15,7 +18,7 @@ function Footer({ onOpenTaskModal, onOpenCategoryModal, currentView }) {
 
                 {currentView === "categories" && (
                     <button
-                        onClick={onOpenCategoryModal}
+                        onClick={() => setIsCategoryModalOpen(true)}
                         className="footer-button category"
                     >
                         + Nouveau Dossier

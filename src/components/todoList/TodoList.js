@@ -2,8 +2,11 @@ import { useState } from "react";
 import Task from "../task/Task";
 import Filter from "../filter/Filter";
 import { isExpiredOverOneWeek } from "../../utils";
+import { useApp } from '../../contexts/AppContext';
 
-function TodoList({ list, listCat, listLink, onDelete, onReset, onUpdateStatus, onEdit }) {
+function TodoList() {
+
+    const { list, listCategories: listCat, listRelations: listLink, deleteItem, updateItemStatus, setEditingTask } = useApp();
 
     const [selectedEtats, setSelectedEtats] = useState(["Nouveau", "En attente"]);
     const [selectedCategories, setSelectedCategories] = useState([]);
@@ -79,7 +82,7 @@ function TodoList({ list, listCat, listLink, onDelete, onReset, onUpdateStatus, 
                         color: '#6b7280'
                     }}>
                         <p style={{ fontSize: '18px' }}>Aucune tâche correspondante</p>
-                        <p>Modifiez vos filtres ou créez une nouvelle tâche !</p>
+                        <p>Modifiez vos filtres ou créez une nouvelle tâche</p>
                     </div>
                 ) : (
                     sortedList.map((item) => {
@@ -90,9 +93,9 @@ function TodoList({ list, listCat, listLink, onDelete, onReset, onUpdateStatus, 
                                 key={item.id}
                                 item={item}
                                 categories={categories}
-                                onUpdateStatus={onUpdateStatus}
-                                onDelete={onDelete}
-                                onEdit={onEdit}
+                                updateItemStatus={updateItemStatus}
+                                deleteItem={deleteItem}
+                                setEditingTask={setEditingTask}
                             />
                         );
                     })

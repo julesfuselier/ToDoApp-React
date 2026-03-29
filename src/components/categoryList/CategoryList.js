@@ -1,4 +1,8 @@
-function CategoryList({listCat, onDeleteCategory}) {
+import { useApp } from '../../contexts/AppContext';
+
+function CategoryList() {
+
+    const { listCategories: listCat, deleteCategory } = useApp();
     return (
         <div className="category-list">
             <h2>Categories</h2>
@@ -7,7 +11,7 @@ function CategoryList({listCat, onDeleteCategory}) {
                 {listCat.map((cat) => (
                     <li key={cat.id} style={{ color: cat.color }}>
                         <span>{cat.title}</span>
-                        <button onClick={() => onDeleteCategory(cat.id)}>Delete</button>
+                        <button onClick={() => deleteCategory(cat.id)}>Delete</button>
                     </li>
                 ))}
             </ul>

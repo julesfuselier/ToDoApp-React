@@ -1,9 +1,11 @@
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
+import {useApp} from "../../contexts/AppContext";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-function Header({ list }) {
+function Header( ) {
+    const { list } = useApp();
     const totalTasks = list.length;
     const taskNotDone = list.filter(tache => tache.etat !== "Reussi" && tache.etat !== "Abandoné").length;
 

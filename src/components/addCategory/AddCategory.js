@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { FOLDER_COLORS, FOLDER_ICONS } from "../../constants";
 import "./AddCategory.css";
+import { useApp } from "../../contexts/AppContext";
 
-function AddCategory({ onAdd, onClose }) {
+function AddCategory() {
+    const { addCategory, setIsCategoryModalOpen } = useApp();
+
     const [selectedColor, setSelectedColor] = useState(FOLDER_COLORS[0].value);
     const [selectedIcon, setSelectedIcon] = useState(FOLDER_ICONS[0]);
 
@@ -10,7 +13,7 @@ function AddCategory({ onAdd, onClose }) {
         e.preventDefault();
         const formData = new FormData(e.target);
 
-        onAdd(
+        addCategory(
             formData.get("title"),
             formData.get("description"),
             selectedColor,
@@ -21,7 +24,7 @@ function AddCategory({ onAdd, onClose }) {
         setSelectedColor(FOLDER_COLORS[0].value);
         setSelectedIcon(FOLDER_ICONS[0]);
 
-        if (onClose) onClose();
+        setIsCategoryModalOpen(false);
     }
 
     return (

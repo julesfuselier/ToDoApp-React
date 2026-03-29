@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useApp } from "../../contexts/AppContext";
 
-function EditTodo({ task, onSave, onCancel, listCat, currentCategories }) {
+function EditTodo({ task, currentCategories }) {
+    const { saveEditedTask, setEditingTask, listCategories: listCat } = useApp();
+
     const [selectedCats, setSelectedCats] = useState(currentCategories || []);
     const [teammates, setTeammates] = useState(task.equipiers || []);
     const [teammateInput, setTeammateInput] = useState("");
@@ -36,7 +39,7 @@ function EditTodo({ task, onSave, onCancel, listCat, currentCategories }) {
         e.preventDefault();
         const formData = new FormData(e.target);
 
-        onSave(
+        saveEditedTask(
             task.id,
             formData.get("title"),
             formData.get("description"),
@@ -45,6 +48,8 @@ function EditTodo({ task, onSave, onCancel, listCat, currentCategories }) {
             teammates
         );
     }
+
+    const handleCancel = () => setEditingTask(null);
 
     return (
         <div className="EditTodo">
@@ -122,9 +127,9 @@ function EditTodo({ task, onSave, onCancel, listCat, currentCategories }) {
                     </div>
                     {teammates.length > 0 && (
                         <div style={{ marginTop: '10px', display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                            {teammates.map((teammate, index) => (
+                            {teammates.map((teammate) => (
                                 <span
-                                    key={index}
+                                    key={teammate}
                                     style={{
                                         backgroundColor: '#e0e0e0',
                                         padding: '5px 10px',
@@ -158,7 +163,7 @@ function EditTodo({ task, onSave, onCancel, listCat, currentCategories }) {
                     <button type="submit" style={{ flex: 1, padding: '12px', backgroundColor: '#10B981', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }}>
                         Enregistrer
                     </button>
-                    <button type="button" onClick={onCancel} style={{ flex: 1, padding: '12px', backgroundColor: '#6b7280', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }}>
+                    <button type="button" onClick={handleCancel} style={{ flex: 1, padding: '12px', backgroundColor: '#6b7280', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }}>
                         Annuler
                     </button>
                 </div>

@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useApp } from '../../contexts/AppContext';
 
-function AddTodo({ onAdd, listCat }) {
+function AddTodo() {
+    const { addItem, listCategories } = useApp();
+
     const [selectedCats, setSelectedCats] = useState([]);
     const [teammates, setTeammates] = useState([]);
     const [teammateInput, setTeammateInput] = useState("");
@@ -36,7 +39,7 @@ function AddTodo({ onAdd, listCat }) {
         e.preventDefault();
         const formData = new FormData(e.target);
 
-        onAdd(
+        addItem(
             formData.get("title"),
             formData.get("description"),
             formData.get("date_echeance"),
@@ -89,7 +92,7 @@ function AddTodo({ onAdd, listCat }) {
                 <div style={{ marginBottom: '15px', textAlign: "left" }}>
                     <label><strong>Catégories :</strong></label>
                     <div style={{ maxHeight: '120px', overflowY: 'auto', border: '1px solid #ddd', padding: '10px', borderRadius: '5px', marginTop: '5px' }}>
-                        {listCat.map((cat) => (
+                        {listCategories.map((cat) => (
                             <label key={cat.id} style={{ display: "block", cursor: "pointer", marginBottom: "5px" }}>
                                 <input
                                     type="checkbox"
@@ -125,9 +128,9 @@ function AddTodo({ onAdd, listCat }) {
                     </div>
                     {teammates.length > 0 && (
                         <div style={{ marginTop: '10px', display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                            {teammates.map((teammate, index) => (
+                            {teammates.map((teammate) => (
                                 <span
-                                    key={index}
+                                    key={teammate}
                                     style={{
                                         backgroundColor: '#e0e0e0',
                                         padding: '5px 10px',
