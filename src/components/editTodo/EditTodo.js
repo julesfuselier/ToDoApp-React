@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-function AddTodo({ onAdd, listCat }) {
-    const [selectedCats, setSelectedCats] = useState([]);
+function EditTodo({ task, onSave, onCancel, listCat, currentCategories }) {
+    const [selectedCats, setSelectedCats] = useState(currentCategories || []);
 
     const handleCategoryChange = (categoryId) => {
         if (selectedCats.includes(categoryId)) {
@@ -15,25 +15,22 @@ function AddTodo({ onAdd, listCat }) {
         e.preventDefault();
         const formData = new FormData(e.target);
 
-        onAdd(
+        onSave(
+            task.id,
             formData.get("title"),
             formData.get("description"),
             formData.get("date_echeance"),
             selectedCats
         );
-
-        e.target.reset();
-        setSelectedCats([]);
     }
 
     return (
         <div className="AddTodo">
-            <h2>Add a new TODO</h2>
+            <h2>Modify a Task</h2>
             <form onSubmit={handleAdd}>
-                <input name="title" type="text" required minLength={5} placeholder="Enter new TODO" />
-                <input name="description" type="text" placeholder="Enter description" />
-
-                <input name="date_echeance" type="date" required />
+                <input name="title" type="text" defaultValue={task.title} required minLength={5} />
+                <input name="description" type="text" defaultValue={task.description} />
+                <input name="date_echeance" type="date" defaultValue={task.date_echeance} required />
 
                 <div style={{ margin: "15px 0", textAlign: "left" }}>
                     <strong>Catégories :</strong>
@@ -51,9 +48,10 @@ function AddTodo({ onAdd, listCat }) {
                 </div>
 
                 <button type="submit">Submit</button>
+                <button type="button" onClick={onCancel} style={{ marginLeft: "10px", backgroundColor: "gray" }}>Cancel</button>
             </form>
         </div>
     );
 }
 
-export default AddTodo;
+export default EditTodo;

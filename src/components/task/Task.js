@@ -1,6 +1,6 @@
 import {useState} from "react";
 
-function Task({item, categories, onUpdateStatus, onDelete}) {
+function Task({item, categories, onUpdateStatus, onDelete, onEdit}) {
 
     const [isFull, setIsFull] = useState(false);
 
@@ -53,6 +53,9 @@ function Task({item, categories, onUpdateStatus, onDelete}) {
                             <option value="Abandoné">Abandoné</option>
                         </select>
 
+                        <button onClick={(e) => { e.stopPropagation(); onEdit(item); }}>
+                            Modifier
+                        </button>
                         <button onClick={(e) => { e.stopPropagation(); onDelete(item.id); }}>Delete</button>
                     </div>
                 </div>

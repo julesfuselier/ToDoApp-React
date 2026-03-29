@@ -2,7 +2,7 @@ import {useState} from "react";
 import Task from "../task/Task";
 import Filter from "../filter/Filter";
 
-function TodoList({ list, listCat, listLink, onDelete, onReset, onUpdateStatus  }) {
+function TodoList({ list, listCat, listLink, onDelete, onReset, onUpdateStatus, onEdit  }) {
 
     const [filterStatus, setFilterStatus] = useState("Tous");
 
@@ -72,6 +72,7 @@ function TodoList({ list, listCat, listLink, onDelete, onReset, onUpdateStatus  
                             categories={categories}
                             onUpdateStatus={onUpdateStatus}
                             onDelete={onDelete}
+                            onEdit={onEdit}
                         />
                     );
                 })}

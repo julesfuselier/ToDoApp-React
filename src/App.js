@@ -10,16 +10,18 @@ import data from './data.json';
 
 import './App.css';
 import Footer from "./components/footer/Footer";
+import EditTodo from "./components/editTodo/EditTodo";
 
 function App() {
     const [list, setList] = useState(data.tasks);
     const [listCategories, setListCategories] = useState(data.categories);
     const [listRelations, setListRelations] = useState(data.relations);
     const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+    const [currentView, setCurrentView] = useState("tasks");
+    const [editingTask, setEditingTask] = useState(null);
 
-    const addItem = (text, description, date, categoryId) => {
+    const addItem = (text, description, date, selectedCategoryIds) => {
         if (text.trim() !== "") {
-
             const newId = Math.max(...list.map(item => item.id)) + 1;
 
             const newTodo = {
@@ -33,13 +35,13 @@ function App() {
 
             setList([...list, newTodo]);
 
-            if (categoryId) {
-                const newRelation = {
+            if (selectedCategoryIds && selectedCategoryIds.length > 0) {
+                const newRelations = selectedCategoryIds.map(catId => ({
                     tache: newId,
-                    categorie: parseInt(categoryId)
-                };
+                    categorie: parseInt(catId)
+                }));
 
-                setListRelations([...listRelations, newRelation]);
+                setListRelations([...listRelations, ...newRelations]);
             }
         }
         setIsTaskModalOpen(false);
@@ -87,20 +89,62 @@ function App() {
         setListRelations(newListRelations);
     }
 
+    const saveEditedTask = (id, newTitle, newDescription, newDate, selectedCategoryIds) => {
+        const updatedList = list.map(item => {
+            if (item.id === id) {
+                return { ...item, title: newTitle, description: newDescription, date_echeance: newDate };
+            }
+            return item;
+        });
+        setList(updatedList);
+
+        let updatedRelations = listRelations.filter(rel => rel.tache !== id);
+
+        selectedCategoryIds.forEach(catId => {
+            updatedRelations.push({
+                tache: id,
+                categorie: parseInt(catId)
+            });
+        });
+
+        setListRelations(updatedRelations);
+        setEditingTask(null);
+    };
+
     return (
         <div className="App">
             <Header list={list} />
 
+            <div style={{ display: "flex", justifyContent: "center", gap: "20px", margin: "20px 0" }}>
+                <button
+                    onClick={() => setCurrentView("tasks")}
+                    style={{ fontWeight: currentView === "tasks" ? "bold" : "normal" }}
+                >
+                    Voir les Tâches
+                </button>
+                <button
+                    onClick={() => setCurrentView("categories")}
+                    style={{ fontWeight: currentView === "categories" ? "bold" : "normal" }}
+                >
+                    Voir les Dossiers
+                </button>
+            </div>
+
             <TitleComponent />
 
-            <TodoList list={list} listCat={listCategories} listLink={listRelations} onDelete={deleteItem} onReset={resetList} onUpdateStatus={updateItemStatus} />
+            {currentView === "tasks" && (
+                <>
+                    <TodoList list={list} listCat={listCategories} listLink={listRelations} onDelete={deleteItem} onReset={resetList} onUpdateStatus={updateItemStatus} onEdit={setEditingTask} />
+                    <Footer onOpenModal={() => setIsTaskModalOpen(true)} />
+                </>
+            )}
 
-            <AddTodo onAdd={addItem} listCat={listCategories} />
-
-            <CategoryList listCat={listCategories} onDeleteCategory={deleteCategory} />
-            <AddCategory onAdd={addCategory} />
-
-            <Footer onOpenModal={() => setIsTaskModalOpen(true)} />
+            {currentView === "categories" && (
+                <>
+                    <CategoryList listCat={listCategories} onDeleteCategory={deleteCategory} />
+                    <AddCategory onAdd={addCategory} />
+                </>
+            )}
 
             {isTaskModalOpen && (
                 <div style={{
@@ -121,6 +165,30 @@ function App() {
 
                     </div>
                 </div>)}
+
+            {editingTask && (() => {
+                const currentCategories = listRelations
+                    .filter(rel => rel.tache === editingTask.id)
+                    .map(rel => rel.categorie);
+
+                return (
+                    <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", backgroundColor: "rgba(0,0,0,0.5)", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                        <div style={{ backgroundColor: "white", padding: "20px", borderRadius: "10px", position: "relative" }}>
+
+                            <button onClick={() => setEditingTask(null)} style={{ position: "absolute", top: "10px", right: "10px", background: "red", color: "white" }}>X</button>
+
+                            <EditTodo
+                                task={editingTask}
+                                onSave={saveEditedTask}
+                                onCancel={() => setEditingTask(null)}
+                                listCat={listCategories}
+                                currentCategories={currentCategories}
+                            />
+
+                        </div>
+                    </div>
+                );
+            })()}
 
         </div>
     );
