@@ -1,12 +1,30 @@
-function Footer({ onOpenModal }) {
+import "./Footer.css";
+import { useApp } from '../../contexts/AppContext';
+
+function Footer() {
+    const { currentView, setIsTaskModalOpen, setIsCategoryModalOpen } = useApp();
+
     return (
-        <footer style={{ marginTop: "30px", padding: "20px", borderTop: "2px solid #ccc", textAlign: "center" }}>
-            <button
-                onClick={onOpenModal}
-                style={{ fontSize: "24px", padding: "10px 20px", borderRadius: "50%", cursor: "pointer", backgroundColor: "#007BFF", color: "white", border: "none" }}
-            >
-                + Nouvelle Tâche
-            </button>
+        <footer className="footer">
+            <div className="footer-buttons">
+                {currentView === "tasks" && (
+                    <button
+                        onClick={() => setIsTaskModalOpen(true)}
+                        className="footer-button task"
+                    >
+                        + Nouvelle Tâche
+                    </button>
+                )}
+
+                {currentView === "categories" && (
+                    <button
+                        onClick={() => setIsCategoryModalOpen(true)}
+                        className="footer-button category"
+                    >
+                        + Nouveau Dossier
+                    </button>
+                )}
+            </div>
         </footer>
     );
 }
