@@ -1,4 +1,14 @@
-function Filter({ sortCriteria, setSortCriteria, selectedEtats, setSelectedEtats, listCat, selectedCategories, setSelectedCategories }) {
+function Filter({
+                    sortCriteria,
+                    setSortCriteria,
+                    selectedEtats,
+                    setSelectedEtats,
+                    listCat,
+                    selectedCategories,
+                    setSelectedCategories,
+                    hideExpiredTasks,
+                    setHideExpiredTasks
+                }) {
 
     const etatsDisponibles = ["Nouveau", "En attente", "Reussi", "Abandoné"];
 
@@ -19,10 +29,17 @@ function Filter({ sortCriteria, setSortCriteria, selectedEtats, setSelectedEtats
     };
 
     return (
-        <div className="Filter" style={{ border: "1px solid #ccc", padding: "15px", marginBottom: "20px", borderRadius: "8px", backgroundColor: "#f9f9f9" }}>
+        <div className="Filter" style={{
+            border: "1px solid #ccc",
+            padding: "15px",
+            marginBottom: "20px",
+            borderRadius: "8px",
+            backgroundColor: "#f9f9f9"
+        }}>
             <h3>Filtres et Tris</h3>
 
             <div style={{ display: "flex", gap: "30px", flexWrap: "wrap" }}>
+
                 <div>
                     <strong>Trier par : </strong>
                     <select value={sortCriteria} onChange={(e) => setSortCriteria(e.target.value)}>
@@ -46,19 +63,34 @@ function Filter({ sortCriteria, setSortCriteria, selectedEtats, setSelectedEtats
                     ))}
                 </div>
 
+                {/* Dossiers */}
+                {listCat.length > 0 && (
+                    <div>
+                        <strong>Dossiers : </strong>
+                        {listCat.map(cat => (
+                            <label key={cat.id} style={{ marginRight: "10px", cursor: "pointer" }}>
+                                <input
+                                    type="checkbox"
+                                    checked={selectedCategories.includes(cat.id)}
+                                    onChange={() => toggleCategory(cat.id)}
+                                />
+                                {cat.icon} {cat.title}
+                            </label>
+                        ))}
+                    </div>
+                )}
+
                 <div>
-                    <strong>Dossiers : </strong>
-                    {listCat.map(cat => (
-                        <label key={cat.id} style={{ marginRight: "10px", cursor: "pointer" }}>
-                            <input
-                                type="checkbox"
-                                checked={selectedCategories.includes(cat.id)}
-                                onChange={() => toggleCategory(cat.id)}
-                            />
-                            {cat.title}
-                        </label>
-                    ))}
+                    <label style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}>
+                        <input
+                            type="checkbox"
+                            checked={hideExpiredTasks}
+                            onChange={(e) => setHideExpiredTasks(e.target.checked)}
+                        />
+                        <strong>Masquer les tâches expirées depuis +1 semaine</strong>
+                    </label>
                 </div>
+
             </div>
         </div>
     );
