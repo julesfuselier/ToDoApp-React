@@ -1,0 +1,60 @@
+.category-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.category-card {
+    background-color: #FFFFFF;
+    border: 1px solid #E8EDE9;
+    border-radius: 8px;
+    padding: 16px 20px;
+    box-shadow: 0 1px 2px rgba(31, 41, 34, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.category-card:hover {
+    box-shadow: 0 4px 12px rgba(31, 41, 34, 0.08);
+    border-color: #8DA392;
+}
+
+.category-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.category-color-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+}
+
+.category-text h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #1F2922;
+    margin: 0;
+}
+
+.category-actions button {
+    background: none;
+    border: 1px solid #D96C5B;
+    color: #D96C5B;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.category-actions button:hover {
+    background-color: #D96C5B;
+    color: #FFFFFF;
+}
